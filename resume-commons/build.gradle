@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.mhzars.projects.resume'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
+
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.8'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.8'
+    implementation 'ma.glasnost.orika:orika-core:1.5.4'
+    implementation 'org.yaml:snakeyaml:2.0'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'uk.co.jemos.podam:podam:8.0.1.RELEASE'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.4'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(Test) {
+        jvmArgs += ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
+}

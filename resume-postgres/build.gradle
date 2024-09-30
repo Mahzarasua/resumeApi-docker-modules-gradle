@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+}
+
+group = 'dev.mhzars.projects.resume'
+version = '1.0-SNAPSHOT'
+description = 'resume-postgres'
+
+dependencies {
+    implementation project(':resume-commons')
+    testImplementation project(':resume-commons').sourceSets.test.output
+
+    implementation'org.springframework.boot:spring-boot-starter-data-jpa:3.2.5'
+    runtimeOnly 'org.postgresql:postgresql:42.6.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(Test) {
+    jvmArgs += ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
+}
+
+import org.yaml.snakeyaml.Yaml
+
+task generateApplicationYml {
+    doLast {
+        def ymlFile = file('src/main/resources/application.yml')
+        def ymlContent = ymlFile.exists() ? ymlFile.text : ""
+        def yaml = new Yaml()
+        def data = ymlContent ? yaml.load(ymlContent) : [:]
+        if(!data.containsKey('app') || !data.containsKey('version') || !data.containsKey('description')) {
+            if(!data.containsKey('app')){
+                data.app = [:]
+            }
+            data.app.version = version
+            data.app.description = project.description
+
+            def newContent = yaml.dumpAsMap(data)
+            ymlFile.text = newContent
+        }
+    }
+}
+
+tasks.every {task ->
+    if(task.name != 'generateApplicationYml') {
+        task.dependsOn generateApplicationYml
+    }
+}

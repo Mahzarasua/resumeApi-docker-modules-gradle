@@ -1,0 +1,1546 @@
+{
+	"info": {
+		"_postman_id": "ee9dce6b-76ee-4168-b331-6465769581e3",
+		"name": "ResumeApiDockerCompose",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17207980"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"zars\",\r\n    \"password\": \"Welcome1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resume",
+			"item": [
+				{
+					"name": "GetResumes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/resume/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"resume",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetResumeById",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.log(error);\r",
+									"    }\r",
+									"    if(JSON.stringify(res.json()) != \"[]\"){\r",
+									"        pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));\r",
+									"        var data = JSON.parse(pm.collectionVariables.get(\"resume\"));\r",
+									"        pm.collectionVariables.set(\"resumeId\", data[0].id);\r",
+									"    } else {\r",
+									"        console.log(\"No records available\");\r",
+									"        pm.collectionVariables.set(\"resumeId\", null);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/resume/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"resume",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteResumeById",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"        if (err) {\r",
+									"            console.log(error);\r",
+									"        }\r",
+									"        if(JSON.stringify(res.json()) != \"[]\"){\r",
+									"            pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));\r",
+									"            var data = JSON.parse(pm.collectionVariables.get(\"resume\"));\r",
+									"            pm.collectionVariables.set(\"resumeId\", data[0].id);\r",
+									"        } else{\r",
+									"            console.log(\"No records\");\r",
+									"            pm.collectionVariables.set(\"resumeId\", null);\r",
+									"        }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/resume/?resumeId={{resumeId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"resume",
+								""
+							],
+							"query": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateResume",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.log(error);\r",
+									"    }\r",
+									"    if(JSON.stringify(res.json()) != \"[]\"){\r",
+									"        pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));\r",
+									"    }\r",
+									"    var data = JSON.parse(pm.collectionVariables.get(\"resume\"));\r",
+									"    var createResume = JSON.stringify(data[0]);\r",
+									"    var resumeJson = JSON.parse(createResume);\r",
+									"    resumeJson.id = \"\";\r",
+									"    pm.collectionVariables.set(\"createResume\", JSON.stringify(resumeJson));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{createResume}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/resume/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"resume",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateResume",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.log(error);\r",
+									"    }\r",
+									"    if(JSON.stringify(res.json()) != \"[]\"){\r",
+									"        pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));\r",
+									"        var data = JSON.parse(pm.collectionVariables.get(\"resume\"));\r",
+									"        pm.collectionVariables.set(\"resumeId\", data[0].id);\r",
+									"        var data = JSON.parse(pm.collectionVariables.get(\"resume\"));\r",
+									"        data[0].firstName = pm.collectionVariables.get(\"testName\");\r",
+									"        pm.collectionVariables.set(\"updateResume\", JSON.stringify(data[0]));\r",
+									"    } else {\r",
+									"        console.log(\"No records available\");\r",
+									"        pm.collectionVariables.set(\"resumeId\", null);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{updateResume}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/resume/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"resume",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RestoreUpdate",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"    if (err) {\r",
+									"        console.log(error);\r",
+									"    }\r",
+									"    if(JSON.stringify(res.json()) != \"[]\"){\r",
+									"        pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));\r",
+									"        var data = JSON.parse(pm.collectionVariables.get(\"resume\"));\r",
+									"        pm.collectionVariables.set(\"resumeId\", data[0].id);\r",
+									"        var data = JSON.parse(pm.collectionVariables.get(\"resume\"));\r",
+									"        data[0].firstName = pm.collectionVariables.get(\"originalName\");\r",
+									"        pm.collectionVariables.set(\"updateResume\", JSON.stringify(data[0]));\r",
+									"    } else {\r",
+									"        console.log(\"No records available\");\r",
+									"        pm.collectionVariables.set(\"resumeId\", null);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{updateResume}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/resume/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"resume",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OpenApi",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/openapi",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"openapi"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/authenticate',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'content-type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({\"username\": pm.collectionVariables.get(\"jwtUser\"), \"password\": pm.collectionVariables.get(\"jwtPass\")})",
+							"    }",
+							"}, (err, res) => pm.collectionVariables.set(\"TOKEN\", res.json().jwtToken));"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Education",
+			"item": [
+				{
+					"name": "GetEducationListByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/education/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"education",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostEducationByResumeId Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"educationList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Instituto Tecnologico de Lazaro Cardenas\",\r\n            \"career\": \"Computer Systems Engineering\",\r\n            \"degree\": \"Bachelor\",\r\n            \"startDate\": \"2016-08-01\",\r\n            \"endDate\": \"2021-12-01\",\r\n            \"creationDate\": \"2023-09-07T18:57:08.479\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Universidad Interamericana para el Desarrollo\",\r\n            \"career\": \"Information Technologies\",\r\n            \"degree\": \"Master\",\r\n            \"startDate\": \"2008-08-02\",\r\n            \"endDate\": \"2009-12-02\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/education/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"education",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteEducationByResumeIdAndId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\")+'/api/v1/education/'+pm.collectionVariables.get(\"resumeId\"),\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"        if (err) {\r",
+									"            console.log(error);\r",
+									"        }\r",
+									"        var jsonDetails = JSON.stringify(res.json());\r",
+									"        if(jsonDetails.match(/(?:Record not found)/)){\r",
+									"            console.log(\"No records available\");\r",
+									"            pm.collectionVariables.set(\"educationId\", null);\r",
+									"        } else{\r",
+									"            pm.collectionVariables.set(\"resumeEducation\", jsonDetails);\r",
+									"            if(pm.collectionVariables.get(\"resumeEducation\") != null){\r",
+									"                pm.collectionVariables.set(\"educationId\", JSON.parse(pm.collectionVariables.get(\"resumeEducation\")).educationList[0].id);\r",
+									"                }\r",
+									"        }\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/education/:resumeId?id={{educationId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"education",
+								":resumeId"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{educationId}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostEducationByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"educationList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Instituto Tecnologico de Lazaro Cardenas\",\r\n            \"career\": \"Computer Systems Engineering\",\r\n            \"degree\": \"Bachelor\",\r\n            \"startDate\": \"2016-08-01\",\r\n            \"endDate\": \"2021-12-01\",\r\n            \"creationDate\": \"2023-09-07T18:57:08.479\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Universidad Interamericana para el Desarrollo\",\r\n            \"career\": \"Information Technologies\",\r\n            \"degree\": \"Master\",\r\n            \"startDate\": \"2008-08-02\",\r\n            \"endDate\": \"2009-12-02\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/education/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"education",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteEducationByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/education/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"education",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostEducationByResumeId Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"educationList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Instituto Tecnologico de Lazaro Cardenas\",\r\n            \"career\": \"Computer Systems Engineering\",\r\n            \"degree\": \"Bachelor\",\r\n            \"startDate\": \"2016-08-01\",\r\n            \"endDate\": \"2021-12-01\",\r\n            \"creationDate\": \"2023-09-07T18:57:08.479\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Universidad Interamericana para el Desarrollo\",\r\n            \"career\": \"Information Technologies\",\r\n            \"degree\": \"Master\",\r\n            \"startDate\": \"2008-08-02\",\r\n            \"endDate\": \"2009-12-02\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/education/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"education",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/authenticate',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'content-type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({\"username\": pm.collectionVariables.get(\"jwtUser\"), \"password\": pm.collectionVariables.get(\"jwtPass\")})",
+							"    }",
+							"}, (err, res) => {",
+							"    pm.collectionVariables.set(\"TOKEN\", res.json().jwtToken);",
+							"    pm.sendRequest({",
+							"        url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',",
+							"        method: 'GET',",
+							"        header: {",
+							"            'content-type': 'application/json',",
+							"            'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")",
+							"        },",
+							"    }, (err, res) => {",
+							"        if (err) {",
+							"            console.log(error);",
+							"        }",
+							"        if(JSON.stringify(res.json()) != \"[]\"){",
+							"            pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));",
+							"            var data = JSON.parse(pm.collectionVariables.get(\"resume\"));",
+							"            pm.collectionVariables.set(\"resumeId\", data[0].id);",
+							"        } else {",
+							"            console.log(\"No records available\");",
+							"            pm.collectionVariables.set(\"resumeId\", null);",
+							"        }",
+							"    });",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Experience",
+			"item": [
+				{
+					"name": "GetexperienceListByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/experience/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"experience",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostExperienceByResumeId Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"experienceList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"title\": \"Backend Developer\",\r\n            \"company\": \"4th Source\",\r\n            \"currentJob\": true,\r\n            \"description\": \"Design and develop the backend for the enterprise projects.\",\r\n            \"startDate\": \"2020-11-01\",\r\n            \"endDate\": null,\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"title\": \"Backend Developer\",\r\n            \"company\": \"4th Source\",\r\n            \"currentJob\": true,\r\n            \"description\": \"Design and develop the backend for the enterprise projects.\",\r\n            \"startDate\": \"2020-11-01\",\r\n            \"endDate\": null,\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/experience/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"experience",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteExperienceByResumeIdAndId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\")+'/api/v1/experience/'+pm.collectionVariables.get(\"resumeId\"),\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"        if (err) {\r",
+									"            console.log(error);\r",
+									"        }\r",
+									"        var jsonDetails = JSON.stringify(res.json());\r",
+									"        if(jsonDetails.match(/(?:Record not found)/)){\r",
+									"            console.log(\"No records available\");\r",
+									"            pm.collectionVariables.set(\"experienceId\", null);\r",
+									"        } else{\r",
+									"            pm.collectionVariables.set(\"resumeExperience\", jsonDetails);\r",
+									"            if(pm.collectionVariables.get(\"resumeExperience\") != null){\r",
+									"                pm.collectionVariables.set(\"experienceId\", JSON.parse(pm.collectionVariables.get(\"resumeExperience\")).experienceList[0].id);\r",
+									"                }\r",
+									"        }\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/experience/:resumeId?id={{experienceId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"experience",
+								":resumeId"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{experienceId}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostExperienceByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"experienceList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"title\": \"Backend Developer\",\r\n            \"company\": \"4th Source\",\r\n            \"currentJob\": true,\r\n            \"description\": \"Design and develop the backend for the enterprise projects.\",\r\n            \"startDate\": \"2020-11-01\",\r\n            \"endDate\": null,\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"title\": \"Backend Developer\",\r\n            \"company\": \"4th Source\",\r\n            \"currentJob\": true,\r\n            \"description\": \"Design and develop the backend for the enterprise projects.\",\r\n            \"startDate\": \"2020-11-01\",\r\n            \"endDate\": null,\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/experience/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"experience",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteExperienceByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/experience/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"experience",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostExperienceByResumeId Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"experienceList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"title\": \"Backend Developer\",\r\n            \"company\": \"4th Source\",\r\n            \"currentJob\": true,\r\n            \"description\": \"Design and develop the backend for the enterprise projects.\",\r\n            \"startDate\": \"2020-11-01\",\r\n            \"endDate\": null,\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"title\": \"Backend Developer\",\r\n            \"company\": \"4th Source\",\r\n            \"currentJob\": true,\r\n            \"description\": \"Design and develop the backend for the enterprise projects.\",\r\n            \"startDate\": \"2020-11-01\",\r\n            \"endDate\": null,\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/experience/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"experience",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/authenticate',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'content-type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({\"username\": pm.collectionVariables.get(\"jwtUser\"), \"password\": pm.collectionVariables.get(\"jwtPass\")})",
+							"    }",
+							"}, (err, res) => {",
+							"    pm.collectionVariables.set(\"TOKEN\", res.json().jwtToken);",
+							"    pm.sendRequest({",
+							"        url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',",
+							"        method: 'GET',",
+							"        header: {",
+							"            'content-type': 'application/json',",
+							"            'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")",
+							"        },",
+							"    }, (err, res) => {",
+							"        if (err) {",
+							"            console.log(error);",
+							"        }",
+							"        if(JSON.stringify(res.json()) != \"[]\"){",
+							"            pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));",
+							"            var data = JSON.parse(pm.collectionVariables.get(\"resume\"));",
+							"            pm.collectionVariables.set(\"resumeId\", data[0].id);",
+							"        } else {",
+							"            console.log(\"No records available\");",
+							"            pm.collectionVariables.set(\"resumeId\", null);",
+							"        }",
+							"    });",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Skill",
+			"item": [
+				{
+					"name": "GetSkillListByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/skill/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"skill",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostSkillByResumeId Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"skillList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"C++\",\r\n            \"percentage\": 20,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Javascript\",\r\n            \"percentage\": 40,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Python\",\r\n            \"percentage\": 30,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Java\",\r\n            \"percentage\": 20,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Spanish (native)\",\r\n            \"percentage\": 20,\r\n            \"type\": \"language skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"English\",\r\n            \"percentage\": 70,\r\n            \"type\": \"language skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/skill/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"skill",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSkillByResumeIdAndId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\")+'/api/v1/skill/'+pm.collectionVariables.get(\"resumeId\"),\r",
+									"    method: 'GET',\r",
+									"    header: {\r",
+									"        'content-type': 'application/json',\r",
+									"        'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")\r",
+									"    },\r",
+									"}, (err, res) => {\r",
+									"        if (err) {\r",
+									"            console.log(error);\r",
+									"        }\r",
+									"        var jsonDetails = JSON.stringify(res.json());\r",
+									"        if(jsonDetails.match(/(?:Record not found)/)){\r",
+									"            console.log(\"No records available\");\r",
+									"            pm.collectionVariables.set(\"skillId\", null);\r",
+									"        } else{\r",
+									"            pm.collectionVariables.set(\"resumeSkill\", jsonDetails);\r",
+									"            if(pm.collectionVariables.get(\"resumeSkill\") != null){\r",
+									"                pm.collectionVariables.set(\"skillId\", JSON.parse(pm.collectionVariables.get(\"resumeSkill\")).skillList[0].id);\r",
+									"                }\r",
+									"        }\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/skill/:resumeId?id={{skillId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"skill",
+								":resumeId"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{skillId}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostSkillByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"skillList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"C++\",\r\n            \"percentage\": 20,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Javascript\",\r\n            \"percentage\": 40,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Python\",\r\n            \"percentage\": 30,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Java\",\r\n            \"percentage\": 20,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Spanish (native)\",\r\n            \"percentage\": 20,\r\n            \"type\": \"language skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"English\",\r\n            \"percentage\": 70,\r\n            \"type\": \"language skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/skill/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"skill",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSkillByResumeId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/skill/:resumeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"skill",
+								":resumeId"
+							],
+							"variable": [
+								{
+									"key": "resumeId",
+									"value": "{{resumeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostSkillByResumeId Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"skillList\": [\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"C++\",\r\n            \"percentage\": 20,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Javascript\",\r\n            \"percentage\": 40,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Python\",\r\n            \"percentage\": 30,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Java\",\r\n            \"percentage\": 20,\r\n            \"type\": \"tech skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"Spanish (native)\",\r\n            \"percentage\": 20,\r\n            \"type\": \"language skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        },\r\n        {\r\n            \"resumeId\": \"{{resumeId}}\",\r\n            \"name\": \"English\",\r\n            \"percentage\": 70,\r\n            \"type\": \"language skill\",\r\n            \"creationDate\": \"2023-09-08T16:14:14.282\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/skill/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"skill",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/authenticate',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'content-type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({\"username\": pm.collectionVariables.get(\"jwtUser\"), \"password\": pm.collectionVariables.get(\"jwtPass\")})",
+							"    }",
+							"}, (err, res) => {",
+							"    pm.collectionVariables.set(\"TOKEN\", res.json().jwtToken);",
+							"    pm.sendRequest({",
+							"        url: 'http://localhost:'+pm.collectionVariables.get(\"port\") + '/api/v1/resume/',",
+							"        method: 'GET',",
+							"        header: {",
+							"            'content-type': 'application/json',",
+							"            'Authorization': 'Bearer ' + pm.collectionVariables.get(\"TOKEN\")",
+							"        },",
+							"    }, (err, res) => {",
+							"        if (err) {",
+							"            console.log(error);",
+							"        }",
+							"        if(JSON.stringify(res.json()) != \"[]\"){",
+							"            pm.collectionVariables.set(\"resume\", JSON.stringify(res.json()));",
+							"            var data = JSON.parse(pm.collectionVariables.get(\"resume\"));",
+							"            pm.collectionVariables.set(\"resumeId\", data[0].id);",
+							"        } else {",
+							"            console.log(\"No records available\");",
+							"            pm.collectionVariables.set(\"resumeId\", null);",
+							"        }",
+							"    });",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "61783"
+		},
+		{
+			"key": "TOKEN",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6YXJzIiwiZXhwIjoxNjk0MTE3MjExLCJpYXQiOjE2OTQxMTM2MTF9.m5H8TVjU-ihknZrfwv1meH0TvjYM0UxyJc7jfJkEL7xCGAPlV03juN6phYahi0o1v1AL_5vcHNCKVfjOQeOWQg",
+			"type": "string"
+		},
+		{
+			"key": "jwtUser",
+			"value": "zars",
+			"type": "string"
+		},
+		{
+			"key": "jwtPass",
+			"value": "Welcome1",
+			"type": "string"
+		},
+		{
+			"key": "updateResume",
+			"value": ""
+		},
+		{
+			"key": "originalName",
+			"value": ""
+		},
+		{
+			"key": "testName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "resume",
+			"value": ""
+		},
+		{
+			"key": "resumeId",
+			"value": ""
+		},
+		{
+			"key": "resumeEducation",
+			"value": ""
+		},
+		{
+			"key": "educationId",
+			"value": ""
+		},
+		{
+			"key": "createResume",
+			"value": ""
+		},
+		{
+			"key": "resumeExperience",
+			"value": ""
+		},
+		{
+			"key": "experienceId",
+			"value": ""
+		},
+		{
+			"key": "skillId",
+			"value": ""
+		},
+		{
+			"key": "resumeSkill",
+			"value": ""
+		}
+	]
+}

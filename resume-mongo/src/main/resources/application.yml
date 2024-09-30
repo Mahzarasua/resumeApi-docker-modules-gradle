@@ -1,0 +1,53 @@
+server:
+  port: 0
+spring:
+  application:
+    name: resumeapi-mongoversion
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  docker:
+    compose:
+      lifecycle-management: start_only
+jwt:
+  secret: '{cipher}cdbbf31873716ca9cbf934ffc9932ca8e20b3ee0419d2b85422cccdb50b68109'
+jwt-token-validity: '3600'
+springdoc:
+  api-docs:
+    path: /openapi
+  swagger-ui:
+    path: /swagger-ui-openapi.html
+    defaultModelsExpandDepth: -1
+info:
+  app:
+    version: ${app.version}
+    name: ${spring.application.name}
+    description: ${app.description}
+    license:
+      name: MIT License
+      url: https://opensource.org/licenses/MIT
+    contact:
+      name: Miguel Hernandez
+      url: https://github.com/mahzarasua
+      email: mahzarasua@hotmail.com
+management:
+  health:
+    db:
+      enabled: true
+    diskspace:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: /admin
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: false
+app:
+  version: 1.0-SNAPSHOT
+  description: resume-mongo

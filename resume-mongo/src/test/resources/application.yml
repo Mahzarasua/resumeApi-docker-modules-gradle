@@ -1,0 +1,24 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  data:
+    mongodb:
+      uri: mongodb://zars:R4nd0m@localhost:27017/resume-db?authSource=admin
+logging:
+  level:
+    dev:
+      mhzars: DEBUG
+    org:
+      springframework: INFO
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+server:
+  error:
+    include-message: always
+jwt:
+  secret: '{cipher}cdbbf31873716ca9cbf934ffc9932ca8e20b3ee0419d2b85422cccdb50b68109'

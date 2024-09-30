@@ -1,0 +1,25 @@
+[
+  {
+    "username": "zars",
+    "password": "Welcome1",
+    "active": true,
+    "authRoles": [
+      {
+        "role": "ADMIN"
+      },
+      {
+        "role": "USER"
+      }
+    ]
+  },
+  {
+    "username": "disabled",
+    "password": "Welcome1",
+    "active": false,
+    "authRoles": [
+      {
+        "role": "USER"
+      }
+    ]
+  }
+]

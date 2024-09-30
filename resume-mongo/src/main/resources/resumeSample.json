@@ -1,0 +1,61 @@
+{
+  "city": "Colima City",
+  "country": "Mexico",
+  "email": "mahzarasua@outlook.com",
+  "firstName": "Miguel Alejandro",
+  "lastName": "Hernandez Zarasua",
+  "phone": "+523121557091",
+  "educationList": [
+    {
+      "career": "Computer Systems Engineering",
+      "degree": "Bachelor",
+      "endDate": "2021-12-01",
+      "name": "Instituto Tecnologico de Lazaro Cardenas",
+      "startDate": "2016-08-01"
+    }
+  ],
+  "skillList": [
+    {
+      "name": "C++",
+      "percentage": 20,
+      "type": "tech skill"
+    },
+    {
+      "name": "Javascript",
+      "percentage": 40,
+      "type": "tech skill"
+    },
+    {
+      "name": "Python",
+      "percentage": 30,
+      "type": "tech skill"
+    },
+    {
+      "name": "Java",
+      "percentage": 20,
+      "type": "tech skill"
+    },
+    {
+      "name": "Spanish (native)",
+      "percentage": 20,
+      "type": "language skill"
+    },
+    {
+      "name": "English",
+      "percentage": 70,
+      "type": "language skill"
+    }
+  ],
+  "state": "Colima",
+  "summary": "This is a summary of the resume",
+  "title": "Backend Developer",
+  "experienceList": [
+    {
+      "company": "4th Source",
+      "currentJob": true,
+      "description": "Design and develop the backend for the enterprise projects.",
+      "startDate": "2020-11-01",
+      "title": "Backend Developer"
+    }
+  ]
+}

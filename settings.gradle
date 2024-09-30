@@ -1,0 +1,4 @@
+rootProject.name = 'resumeApi-docker-modules-gradle'
+include 'resume-commons'
+include 'resume-mongo'
+include 'resume-postgres'

@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=resume-db'
+      - 'POSTGRES_PASSWORD=R4nd0m'
+      - 'POSTGRES_USER=zars'
+    ports:
+      - '5432:5432'
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@localhost.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - '5050:5050'
+  mongodb:
+    image: 'mongo:latest'
+    ports:
+      - '27017:27017'
+    environment:
+      - 'MONGO_INITDB_DATABASE=resume-db'
+      - 'MONGO_INITDB_ROOT_PASSWORD=R4nd0m'
+      - 'MONGO_INITDB_ROOT_USERNAME=zars'
